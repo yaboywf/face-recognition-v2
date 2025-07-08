@@ -34,11 +34,27 @@ function findBestMatch(descriptor) {
 
 // Load the models before the button is clicked
 async function loadModels() {
-    await Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-        faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-        faceapi.nets.faceRecognitionNet.loadFromUri('/models')
-    ]);
+    let modelsPath;
+
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        // Running locally
+        modelsPath = '/models';
+    } else {
+        // Running on GitHub or other hosting
+        modelsPath = '/face-recognition/models';
+    }
+
+    // Load the models dynamically
+    Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri(modelsPath),
+        faceapi.nets.faceLandmark68Net.loadFromUri(modelsPath),
+        faceapi.nets.faceRecognitionNet.loadFromUri(modelsPath)
+    ]).then(() => {
+        console.log("All models loaded successfully!");
+    }).catch((err) => {
+        console.error("Error loading models: ", err);
+    });
+    
     document.getElementById('status').textContent = 'Models loaded successfully.';
     await loadKnownFaces(); // Load known faces after models are loaded
 }
