@@ -3,7 +3,7 @@ let stream = null;
 
 // Function to load known faces from the JSON file
 async function loadKnownFaces() {
-    const res = await fetch('/faces.json');
+    const res = await fetch('/face-recognition-v2/faces.json');
     const data = await res.json();
     console.log(data);
 
