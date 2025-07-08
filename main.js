@@ -41,7 +41,7 @@ async function loadModels() {
         modelsPath = '/models';
     } else {
         // Running on GitHub or other hosting
-        modelsPath = '/face-recognition/models';
+        modelsPath = '/face-recognition-v2/models';
     }
 
     // Load the models dynamically
@@ -54,7 +54,7 @@ async function loadModels() {
     }).catch((err) => {
         console.error("Error loading models: ", err);
     });
-    
+
     document.getElementById('status').textContent = 'Models loaded successfully.';
     await loadKnownFaces(); // Load known faces after models are loaded
 }
