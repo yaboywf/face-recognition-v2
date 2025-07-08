@@ -1,0 +1,43 @@
+* {
+    font-family: sans-serif;
+}
+
+video,
+canvas {
+    display: block;
+    border: 20px;
+    margin: 10px auto;
+}
+
+canvas {
+    pointer-events: none;
+}
+
+video {
+    width: 500px;
+    border: 1px solid black;
+    height: 300px;
+}
+
+#status {
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+button {
+    background: black;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1.2em;
+    color: white;
+    cursor: pointer;
+}
+
+section {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}

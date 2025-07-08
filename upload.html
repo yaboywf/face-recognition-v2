@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="file" id="upload" />
+    <input type="text" id="name" placeholder="Enter Name" />
+    <button id="extractBtn">Extract Descriptor</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script>
+        let descriptor = null;
+
+        // Function to handle the button click event
+        document.getElementById('extractBtn').addEventListener('click', async () => {
+            const file = document.getElementById('upload').files[0];
+            const name = document.getElementById('name').value.trim();
+
+            // Validate file and name input
+            if (!file || !name) {
+                alert("Please select an image and enter a name");
+                return;
+            }
+
+            // Load models
+            try {
+                await Promise.all([
+                    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+                    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+                    faceapi.nets.faceRecognitionNet.loadFromUri('/models')
+                ]);
+                console.log("Models loaded successfully.");
+            } catch (err) {
+                console.error("Error loading models:", err);
+                alert("Error loading models. Ensure models are in the correct directory.");
+                return;
+            }
+
+            // Convert the uploaded file to an image
+            const img = await faceapi.bufferToImage(file);
+            document.body.appendChild(img); // Optionally preview the image
+
+            // Detect and extract face descriptor
+            try {
+                const detection = await faceapi
+                    .detectSingleFace(img, new faceapi.TinyFaceDetectorOptions())
+                    .withFaceLandmarks()
+                    .withFaceDescriptor();
+
+                if (!detection) {
+                    alert("No face detected!");
+                    return;
+                }
+
+                // Convert the Float32Array descriptor to a regular array for export
+                const descriptorArray = Array.from(detection.descriptor);
+
+                console.log({
+                    name: name,
+                    descriptor: descriptorArray
+                });
+
+                alert("Descriptor extracted. Check the console log to copy and save.");
+
+            } catch (err) {
+                console.error("Error during face detection:", err);
+                alert("An error occurred during face detection. Please try again.");
+            }
+        });
+    </script>
+</body>
+
+</html>

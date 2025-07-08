@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Face Match with Anti-Spoofing</title>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script defer src="main.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="status">Loading models...</div>
+    <video id="video" width="480" height="360" autoplay muted></video>
+    <canvas id="overlay" width="480" height="360" style="position: absolute; top: 0;"></canvas>
+    <section>
+        <button id="startBtn">start</button>
+        <button id="stop">stop</button>
+    </section>
+</body>
+
+</html>
