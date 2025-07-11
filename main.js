@@ -3,7 +3,14 @@ let stream = null;
 
 // Function to load known faces from the JSON file
 async function loadKnownFaces() {
-    const res = await fetch('/face-recognition-v2/faces.json');
+    let file;
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        file = "/faces.json";
+    } else {
+        file = "/face-recognition-v2/faces.json";
+    }
+
+    const res = await fetch(file);
     const data = await res.json();
     console.log(data);
 
@@ -25,7 +32,8 @@ function findBestMatch(descriptor) {
     let best = { name: "Unknown", distance: 1.0 }; // Set the initial best match to Unknown with max possible distance (1.0)
     for (const user of knownFaces) {
         const dist = faceapi.euclideanDistance(descriptor, user.descriptor);
-        if (dist < best.distance && dist < 0.2) {
+        console.log(dist);
+        if (dist < best.distance && dist <= 0.3) {
             best = { name: user.name, distance: dist };
         }
     }
@@ -79,13 +87,14 @@ async function start() {
                 .withFaceDescriptor();
 
             ctx.clearRect(0, 0, overlay.width, overlay.height);
-
+            
             if (!detection) {
                 status.textContent = `No face detected. Waiting...`;
                 return;
             }
 
             const match = findBestMatch(detection.descriptor);
+            status.textContent = `Matching...`;
 
             if (match.name !== "Unknown") {
                 matches.push(match.name)
@@ -95,6 +104,8 @@ async function start() {
                     status.textContent = `Hello ${match.name}`;
                     clearInterval(interval);
                 }
+            } else {
+                status.textContent = `No match found. Waiting...`;
             }
         }, 300);
     });
