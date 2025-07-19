@@ -41,3 +41,20 @@ section {
     justify-content: center;
     gap: 10px;
 }
+
+#check {
+    justify-content: center;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#check p {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 0;
+    width: 200px;
+}
