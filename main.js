@@ -31,6 +31,7 @@ function findBestMatch(descriptor) {
     let best = { name: "Unknown", distance: 1.0 }; // Set the initial best match to Unknown with max possible distance (1.0)
     for (const user of knownFaces) {
         const dist = faceapi.euclideanDistance(descriptor, user.descriptor);
+        document.getElementById("check").textContent = `${user.name} (${(1 - dist)*100})`
         if (dist < best.distance && dist <= 0.3) {
             best = { name: user.name, distance: dist };
         }
